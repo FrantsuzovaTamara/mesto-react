@@ -2,8 +2,8 @@ import React from "react";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
-import PopUpWithForm from "./PopUpWithForm.js";
-import ImagePopUp from "./ImagePopUp.js";
+import PopUpWithForm from "./PopupWithForm.js";
+import ImagePopUp from "./ImagePopup.js";
 
 function App() {
   function handleEditAvatarClick() {
