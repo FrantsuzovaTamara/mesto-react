@@ -3,9 +3,16 @@ import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import PopUpWithForm from "./PopupWithForm.js";
-import ImagePopUp from "./ImagePopup.js";
+import ImagePopUp from "./ImagePopup.js"
 
 function App() {
+
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isSelectedCardPopupOpen, setIsSelectedCardPopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
@@ -29,13 +36,6 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsSelectedCardPopupOpen(false);
   }
-
-  
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [isSelectedCardPopupOpen, setIsSelectedCardPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
 
   return (
     <>
