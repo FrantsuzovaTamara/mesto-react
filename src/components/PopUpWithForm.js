@@ -1,7 +1,16 @@
 import React from "react";
 
-function PopUpWithForm({isOpen, name, onClose, title, children, submit, onSubmit}) {
-    return (
+function PopUpWithForm({
+  isOpen,
+  name,
+  onClose,
+  title,
+  children,
+  submit,
+  onSubmit,
+  isValid,
+}) {
+  return (
     <div
       className={`pop-up ${isOpen ? "pop-up_opened" : ""}`}
       id={`pop-up_${name}`}
@@ -13,8 +22,8 @@ function PopUpWithForm({isOpen, name, onClose, title, children, submit, onSubmit
           className="pop-up__close-button"
           onClick={onClose}
         ></button>
-        <form 
-          className="pop-up__form" 
+        <form
+          className="pop-up__form"
           name={name}
           onSubmit={onSubmit}
           noValidate
@@ -23,8 +32,10 @@ function PopUpWithForm({isOpen, name, onClose, title, children, submit, onSubmit
           {children}
           <button
             type="submit"
-            className="pop-up__submit-button pop-up__save-button"
-            /* disabled */
+            className={`pop-up__submit-button pop-up__save-button${
+              !isValid ? " pop-up__submit-button_inactive" : ""
+            }`}
+            disabled={!isValid}
           >
             {submit}
           </button>

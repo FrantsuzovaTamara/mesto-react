@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import { useForm } from "react-hook-form";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -34,6 +35,17 @@ function App() {
       });
   }, [])
 
+  const {
+    register,
+    formState: {
+      errors
+    },
+    handleSubmit,
+    reset
+  } = useForm({
+    mode: "all"
+  });
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
@@ -62,6 +74,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsSelectedCardPopupOpen(false);
     setIsConfirmationPopupOpen(false);
+    reset();
   }
 
   function handleCardLike(card) {
@@ -89,6 +102,7 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
         closeAllPopUps();
+        reset();
       })
       .catch((err) => {
         console.log(err);
@@ -99,11 +113,13 @@ function App() {
   }
 
   function handleUpdateAvatar(avatar) {
+    console.log(avatar)
     setIsLoading(true);
     api.editAvatar(avatar)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopUps();
+        reset();
       })
       .catch((err) => {
         console.log(err);
@@ -119,6 +135,7 @@ function App() {
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopUps();
+        reset();
       })
       .catch((err) => {
         console.log(err);
@@ -148,22 +165,28 @@ function App() {
         <EditAvatarPupup 
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopUps}
-          onUpdateAvatar={handleUpdateAvatar}
+          onUpdateAvatar={handleSubmit(handleUpdateAvatar)}
           isLoading={isLoading}
+          register={register}
+          errors={errors}
         />        
 
         <EditProfilePopup 
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopUps}
-          onUpdateUser={handleUpdateUser}
+          onUpdateUser={handleSubmit(handleUpdateUser)}
           isLoading={isLoading}
+          register={register}
+          errors={errors}
         />
 
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopUps}
-          onAddCard={handleAddPlaceSubmit}
+          onAddCard={handleSubmit(handleAddPlaceSubmit)}
           isLoading={isLoading}
+          register={register}
+          errors={errors}
         />
 
         <ConfirmationPopup 
