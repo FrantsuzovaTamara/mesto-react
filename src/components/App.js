@@ -1,5 +1,4 @@
 import {useState, useEffect} from "react";
-import { useForm } from "react-hook-form";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
@@ -35,17 +34,6 @@ function App() {
       });
   }, [])
 
-  const {
-    register,
-    formState: {
-      errors
-    },
-    handleSubmit,
-    reset
-  } = useForm({
-    mode: "all"
-  });
-
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
@@ -74,14 +62,17 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsSelectedCardPopupOpen(false);
     setIsConfirmationPopupOpen(false);
-    reset();
   }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleCardDelete() {
@@ -89,11 +80,11 @@ function App() {
       .then((res) => {
         console.log(res);
         closeAllPopUps();
+        setCards(cards.filter((c) => c._id !== deletedCard._id));
       })
       .catch((err) => {
         console.log(err);
       })
-    setCards(cards.filter((c) => c._id !== deletedCard._id));
   }
 
   function handleUpdateUser(userData) {
@@ -102,7 +93,6 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
         closeAllPopUps();
-        reset();
       })
       .catch((err) => {
         console.log(err);
@@ -113,13 +103,11 @@ function App() {
   }
 
   function handleUpdateAvatar(avatar) {
-    console.log(avatar)
     setIsLoading(true);
     api.editAvatar(avatar)
       .then((data) => {
         setCurrentUser(data);
         closeAllPopUps();
-        reset();
       })
       .catch((err) => {
         console.log(err);
@@ -135,7 +123,6 @@ function App() {
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopUps();
-        reset();
       })
       .catch((err) => {
         console.log(err);
@@ -165,28 +152,22 @@ function App() {
         <EditAvatarPupup 
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopUps}
-          onUpdateAvatar={handleSubmit(handleUpdateAvatar)}
+          onUpdateAvatar={handleUpdateAvatar}
           isLoading={isLoading}
-          register={register}
-          errors={errors}
         />        
 
         <EditProfilePopup 
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopUps}
-          onUpdateUser={handleSubmit(handleUpdateUser)}
+          onUpdateUser={handleUpdateUser}
           isLoading={isLoading}
-          register={register}
-          errors={errors}
         />
 
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopUps}
-          onAddCard={handleSubmit(handleAddPlaceSubmit)}
+          onAddCard={handleAddPlaceSubmit}
           isLoading={isLoading}
-          register={register}
-          errors={errors}
         />
 
         <ConfirmationPopup 

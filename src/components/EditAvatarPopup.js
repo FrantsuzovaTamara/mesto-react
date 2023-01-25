@@ -1,30 +1,28 @@
-import { useRef } from "react";
+import { useRef, useEffect, useContext } from "react";
+import { CurrentUserContext } from '../context/CurrentUserContext';
 import PopUpWithForm from "./PopupWithForm";
+import FormValidator from '../utils/FormValidator';
 
-function EditAvatarPupup({
-  isOpen,
-  onClose,
-  onUpdateAvatar,
-  isLoading,
-  register,
-  errors
-}) {
+function EditAvatarPupup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
+  const currentUser = useContext(CurrentUserContext);
   const avatar = useRef();
-  const { ref, ...rest } = register('avatar', {
-    required: "Поле должно быть заполнено",
-    pattern: {
-      value:/^(http(s):\/\/.)[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)$/,
-      message: "Пожалуйста, ведите url правильно"
-    }
-  });
-  const { isValid } = formState;
-  console.log(isValid)
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    console.log(avatar.current.value)
     onUpdateAvatar({ avatar: avatar.current.value });
   }
+
+  const {
+    errors,
+    isValid,
+    handleChange,
+    resetForm
+  } = FormValidator({});
+
+  useEffect(() => {
+    resetForm();
+    avatar.current.value = currentUser.avatar;
+  }, [isOpen, resetForm, currentUser]);
 
   return (
     <PopUpWithForm
@@ -32,34 +30,26 @@ function EditAvatarPupup({
       onClose={onClose}
       onSubmit={handleSubmit}
       name="edit-avatar"
-      submit={`Сохранить${isLoading ? "..." : ""}`}
+      submit={`Сохранить${isLoading ? '...' : ''}`}
       title="Обновить аватар"
       isValid={isValid}
     >
       <label className="pop-up__field">
         <input
+          ref={avatar}
           id="avatar-link"
           type="url"
-          placeholder="Ссылка на картинку"
-          className={`pop-up__input pop-up__input_add_link${
-            errors.avatar ? " pop-up__input_type_error" : ""
-          }`}
-          {...rest}
           name="avatar"
-          ref={(e) => {
-            ref(e)
-            avatar.current = e
-          }}
+          className={`pop-up__input${errors.avatar ? ' pop-up__input_type_error' : ''}`}
+          onChange={handleChange}
+          placeholder="Ссылка на картинку"
+          required
         />
-        {errors.avatar && (
-          <span
-            className={`pop-up__input-error avatar-link-error${
-              errors.avatar ? " pop-up__input-error_active" : ""
-            }`}
-          >
-            {errors.avatar.message}
-          </span>
-        )}
+        <span 
+          className={errors.avatar ? 'pop-up__input-error pop-up__input-error_active' : 'pop-up__input-error'}
+        >
+          {errors.avatar}
+        </span>
       </label>
     </PopUpWithForm>
   );
