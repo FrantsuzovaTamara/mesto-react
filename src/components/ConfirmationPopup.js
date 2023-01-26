@@ -15,6 +15,7 @@ function ConfirmationPopup({isOpen, onClose, onConfirm}) {
       name="edit-avatar"
       submit="Да"
       title="Вы уверены?"
+      isValid={true}
     />
   )
 }
