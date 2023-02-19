@@ -1,4 +1,4 @@
-![Шапка сайта](./images/redme/redme__header.png)
+![Шапка сайта](./src/images/redme/redme__header.png)
 
 # Проект: Место
 
@@ -24,16 +24,16 @@
 Это интерактивная страница, на которой можно:
 
 * делиться своими фотографиями и видеть фотографии других пользователей
-![Добавить карточку](./images/redme/readme__add-card.png)
+![Добавить карточку](./src/images/redme/readme__add-card.png)
 
 * удалять свои карточки (у личных карточек есть иконка урны, у карточек других пользователей такой иконки нет), ставить лайки своим карточкам и карточкам других пользователей
-![Удаление и лайк](./images/redme/readme__like-and-delete.gif)
+![Удаление и лайк](./src/images/redme/readme__like-and-delete.gif)
 
 * редактировать свой профиль
-![Редактирование профиля](./images/redme/readme__change-profile.png)
+![Редактирование профиля](./src/images/redme/readme__change-profile.png)
 
 * менять аватар профиля
-![Смена аватара](./images/redme/redme__change-avatar.png)
+![Смена аватара](./src/images/redme/redme__change-avatar.png)
 
 ## **Что использовалось?**
 
